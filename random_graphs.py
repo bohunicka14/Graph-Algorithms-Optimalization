@@ -75,6 +75,7 @@ class Graph(object):
                 return False
 
         new_edge = Edge(new_edge_val, node_from, node_to)
+        # new_edge2 = Edge(new_edge_val, node_to, node_from)
         node_from.edges.append(new_edge)
         node_to.edges.append(new_edge)
         self.edges.append(new_edge)
@@ -221,17 +222,60 @@ class Graph(object):
             for e in node.edges:
                 if unvisited_outgoing_edge(node, e):
                     enqueue(e.node_to)
+
         return ret_list
 
     def bfs_names(self, start_node_num):
         """Return the results of bfs with numbers converted to names."""
         return [self.node_names[num] for num in self.bfs(start_node_num)]
 
-    def dergee_node(self, node_val):
+    def node_degree(self, node_val):
         for node in self.nodes:
             if node.value == node_val:
                 return node.degree()
 
+        return -1
+
+    def average_distance(self):
+        result = 0
+        passes = 0
+        print(len(self.nodes))
+        for i in range(len(self.nodes)):
+            for j in range(i+1, len(self.nodes)):
+                passes += 1
+                result += self.node_distance(self.nodes[i], self.nodes[j].value)
+        print(result, passes)
+        return result/passes
+
+
+    def node_distance(self, node, node_to_val):
+        self._clear_visited()
+        queue = [(node, 0)]
+        node.visited = True
+
+        def enqueue(n, dist, q=queue):
+            n.visited = True
+            q.append((n, dist))
+
+        def unvisited_outgoing_edge(n, e):
+            return ((e.node_from.value == n.value) and
+                    (not e.node_to.visited))
+
+        def unvisited_ingoing_edge(n, e):
+            return (((e.node_to.value == n.value) and
+                     (not e.node_from.visited)))
+
+        while queue:
+            node, dist = queue.pop(0)
+
+            if node.value == node_to_val:
+                return dist
+
+            for e in node.edges:
+                if unvisited_outgoing_edge(node, e):
+                    enqueue(e.node_to, dist + 1)
+                if unvisited_ingoing_edge(node, e):
+                    enqueue(e.node_from, dist + 1)
         return -1
 
     def is_bipartite(self, src):
@@ -364,9 +408,17 @@ def graph_generation_method2():
 
 
 if __name__ == '__main__':
-    graph_generation_method1()
-    graph_generation_method2()
+    # graph_generation_method1()
+    # graph_generation_method2()
 
+    g = Graph()
+    g.insert_edge(1, 0, 1)
+    g.insert_edge(1, 1, 2)
+    g.insert_edge(1, 2, 3)
+    g.insert_edge(1, 3, 4)
+    g.insert_edge(1, 4, 5)
+    g.insert_edge(1, 5, 0)
+    print(g.average_distance())
 
 # graph = Graph()
 #
