@@ -1,5 +1,6 @@
 import random
 import numpy
+import matplotlib.pyplot as plt
 
 class Node(object):
     def __init__(self, value):
@@ -239,14 +240,13 @@ class Graph(object):
     def average_distance(self):
         result = 0
         passes = 0
-        print(len(self.nodes))
+
         for i in range(len(self.nodes)):
             for j in range(i+1, len(self.nodes)):
                 passes += 1
                 result += self.node_distance(self.nodes[i], self.nodes[j].value)
-        print(result, passes)
-        return result/passes
 
+        return result/passes
 
     def node_distance(self, node, node_to_val):
         self._clear_visited()
@@ -307,7 +307,7 @@ class Graph(object):
 
             # Return false if there is a self-loop
             if adjacency_matrix[u][u] == 1:
-                return False;
+                return False
 
             for v in range(len(self.nodes)):
 
@@ -406,19 +406,42 @@ def graph_generation_method2():
     return graph
 
 
-
 if __name__ == '__main__':
-    # graph_generation_method1()
-    # graph_generation_method2()
+    g1 = graph_generation_method1()
+    g2 = graph_generation_method2()
 
-    g = Graph()
-    g.insert_edge(1, 0, 1)
-    g.insert_edge(1, 1, 2)
-    g.insert_edge(1, 2, 3)
-    g.insert_edge(1, 3, 4)
-    g.insert_edge(1, 4, 5)
-    g.insert_edge(1, 5, 0)
-    print(g.average_distance())
+    print('G1 bipartite: ', g1.is_bipartite(1))
+    print('G2 bipartite: ', g2.is_bipartite(1))
+    print('G1 average distance: ', g1.average_distance())
+    print('G2 average distance: ', g2.average_distance())
+
+    fig, ax = plt.subplots()
+    for i in range(100):
+        g1 = graph_generation_method1()
+        if g1.is_bipartite(1):
+            c = 'red'
+        else:
+            c = 'green'
+        ax.scatter(i, g1.average_distance(), c=c, marker='o')
+
+    for i in range(100):
+        g2 = graph_generation_method2()
+        if g2.is_bipartite(1):
+            c = 'black'
+        else:
+            c = 'blue'
+        ax.scatter(i, g2.average_distance(), c=c, marker='s')
+    plt.show()
+
+
+    # g = Graph()
+    # g.insert_edge(1, 0, 1)
+    # g.insert_edge(1, 1, 2)
+    # g.insert_edge(1, 2, 3)
+    # g.insert_edge(1, 3, 4)
+    # g.insert_edge(1, 4, 5)
+    # g.insert_edge(1, 5, 0)
+    # print(g.average_distance())
 
 # graph = Graph()
 #
