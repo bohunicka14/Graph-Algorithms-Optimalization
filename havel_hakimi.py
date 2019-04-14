@@ -17,7 +17,7 @@ def havel_hakimi(input):
     d1 = input[0]
     while d1 > 0:
         input = update_array(input)
-
+        print(input)
         # if input is None:
         #     return True
         d1 = input[0]
@@ -28,7 +28,9 @@ def havel_hakimi(input):
     return False
 
 if __name__ == '__main__':
-    print(havel_hakimi([5,5,4,3,2,2,2,1]))
-    print(havel_hakimi([5,5,4,4,2,2,1,1]))
-    print(havel_hakimi([5,5,5,3,2,2,2,1,1]))
-    print(havel_hakimi([5,5,5,4,2,1,1,1]))
+    # print(havel_hakimi([5,5,4,3,2,2,2,1]))
+    # print(havel_hakimi([5,5,4,4,2,2,1,1]))
+    # print(havel_hakimi([5,5,5,3,2,2,2,1,1]))
+    # print(havel_hakimi([5,5,5,4,2,1,1,1]))
+
+    print(havel_hakimi([5,5,4,4,1,1,1,1]))
